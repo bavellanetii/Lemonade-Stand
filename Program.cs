@@ -18,7 +18,7 @@ namespace Lemonade_Stand
          * 
         */
 
-            decimal money = 20; //total money
+            decimal money = 25; //total money
             decimal price; //set daily dependent on weather
             int lemons; //25% chance to spoil
             int sugar; //Cups of sugar
@@ -26,40 +26,169 @@ namespace Lemonade_Stand
             int ice; //Ice cubes. Melt at the end of each day
             int date = 1;
             string gameDays;
+            string deductLemons;
+            string deductSugar;
+            string deductCups;
+            string deductIce;
 
-        static void Main(string[] args)
+
+        static void Main()
+
         {
+            var p = new Program();
+            p.Start();
+            
+            p.NewDay();
 
-            
-           
+            p.BuySupplies();
 
-           
-            
-            
-            
-       
+            p.ListSupplies();
+
+            Console.ReadLine();
+
         }
 
         public void Start()
         {
+            //Starts the game, prompting the user to select how many days they would like to play for
+           
             Console.WriteLine("Welcome To Lemonade Stand!");
-            Console.WriteLine("How many days would you like to play? (You can play up to 30 days)");
+            Console.WriteLine("How many days would you like to play? (You can play between 7 and 30 days)");
             gameDays = Console.ReadLine();
-            int parsedGameDays = int.Parse(gameDays);
+            int parsedGameDays;
+
+            while (!int.TryParse(gameDays, out parsedGameDays))
+            {
+            Console.WriteLine("Invalid Number, please enter a number between 7 and 30");
+            gameDays = Console.ReadLine();
+
+            }
+
             Console.Clear();
+            
         }
 
 
         public void NewDay()
         {
+            //Each day will be assigned a random temperature, and will ask the user to buy supplies. Will need to be nested in a loop for each day.
+           
             Random random = new Random();
             Console.WriteLine("Day " + date);
-            Console.WriteLine("Today's Weather is " + random.Next(15, 35) + " degrees.");
+            Console.WriteLine("Today's Weather is " + random.Next(15, 32) + " degrees.");
             Console.WriteLine("You have £" + money + ".");
+            Console.WriteLine();
             Console.WriteLine("Price List:");
-            Console.WriteLine("Paper Cups: 20 for £1 or 50 for £2");
+            Console.WriteLine("Lemons: 10 for £1 ");
+            Console.WriteLine("Paper Cups: 20 for £1");
             Console.WriteLine("Sugar: 8 cups for Sugar for £1");
-            Console.ReadLine();
+            Console.WriteLine("Ice: 100 cubes for £1");
+            Console.WriteLine();
         }
+
+        public void BuySupplies()
+        {
+            //need to change all to TryParse to better handle exceptions
+            
+
+            Console.WriteLine("How many pounds would you like to spend on lemons?");
+            deductLemons = Console.ReadLine();
+            int parsedDeductLemons = int.Parse(deductLemons);
+
+            while (parsedDeductLemons > money)
+            {
+                Console.WriteLine("You only have £" + money + ", please try again.");
+                Console.WriteLine();
+                Console.WriteLine("How many pounds would you like to spend on lemons?");
+                deductLemons = Console.ReadLine();
+                parsedDeductLemons = int.Parse(deductLemons);
+            }
+
+            money = money - parsedDeductLemons;
+            lemons = parsedDeductLemons * 10;
+            Console.WriteLine("You have £" + money + " remaining");
+            Console.WriteLine();
+
+
+
+
+
+
+            Console.WriteLine("How many pounds would you like to spend on sugar?");
+            deductSugar = Console.ReadLine();
+            int parsedDeductSugar = int.Parse(deductSugar);
+            
+            while (parsedDeductSugar > money)
+            { 
+                Console.WriteLine("You only have £" + money + ", please try again.");
+                Console.WriteLine();
+                Console.WriteLine("How many pounds would you like to spend on sugar?");
+                deductSugar = Console.ReadLine();
+                parsedDeductSugar = int.Parse(deductSugar);
+            }
+            
+            money = money - parsedDeductSugar;
+            sugar = parsedDeductSugar * 8;
+            Console.WriteLine("You have £" + money + " remaining");
+            Console.WriteLine();
+
+            
+            
+            
+            Console.WriteLine("How many pounds would you like to spend on paper cups?");
+            deductCups = Console.ReadLine();
+            int parsedDeductCups = int.Parse(deductCups);
+
+            while (parsedDeductCups > money)
+            {
+                Console.WriteLine("You only have £" + money + ", please try again.");
+                Console.WriteLine();
+                Console.WriteLine("How many pounds would you like to spend on paper cups?");
+                deductCups = Console.ReadLine();
+                parsedDeductCups = int.Parse(deductCups);
+            }
+
+            money = money - parsedDeductCups;
+            cups = parsedDeductCups * 20;
+            Console.WriteLine("You have £" + money + " remaining");
+            Console.WriteLine();
+
+
+
+
+
+            Console.WriteLine("How many pounds would you like to spend on Ice?");
+            deductIce = Console.ReadLine();
+            int parsedDeductIce = int.Parse(deductIce);
+
+            while (parsedDeductIce > money)
+            {
+                Console.WriteLine("You only have £" + money + ", please try again.");
+                Console.WriteLine();
+                Console.WriteLine("How many pounds would you like to spend on Ice?");
+                deductIce = Console.ReadLine();
+                parsedDeductIce = int.Parse(deductIce);
+            }
+
+            money = money - parsedDeductIce;
+            ice = parsedDeductIce * 100;
+            Console.WriteLine("You have £" + money + " remaining");
+            Console.WriteLine();
+
+        }
+
+        public void ListSupplies()
+        {
+            
+
+            Console.WriteLine("You have " + lemons + " lemons.");
+            Console.WriteLine("You have " + sugar + " cups of sugar.");
+            Console.WriteLine("You have " + cups + " paper cups.");
+            Console.WriteLine("You have " + ice + " ice cubes.");
+            Console.WriteLine(money);
+
+        }
+
+
     }
 }
