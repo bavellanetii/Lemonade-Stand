@@ -19,7 +19,7 @@ namespace Lemonade_Stand
         */
 
             decimal money = 25; //total money
-            decimal price; //set daily dependent on weather
+            decimal cupsSold;
             int lemons; //25% chance to spoil
             int sugar; //Cups of sugar
             int cups; //Paper cups
@@ -29,6 +29,7 @@ namespace Lemonade_Stand
             int weather;
             int customers;
             int thirst;
+            int parsedGameDays;
             string gameDays;
             string deductLemons;
             string deductSugar;
@@ -43,16 +44,24 @@ namespace Lemonade_Stand
         {
             var p = new Program();
             p.Start();
-            
-            p.NewDay();
 
-            p.BuySupplies();
+            while (p.parsedGameDays > p.date)
 
-            p.ListSupplies();
+            {
+                p.NewDay();
 
-            p.RunDay();
+                p.ListSupplies();
 
-            Console.ReadLine();
+                p.BuySupplies();
+
+                p.ListSupplies();
+
+                p.RunDay();
+
+                p.date++;
+
+                Console.ReadLine();
+            }
 
         }
 
@@ -63,7 +72,7 @@ namespace Lemonade_Stand
             Console.WriteLine("Welcome To Lemonade Stand!");
             Console.WriteLine("How many days would you like to play? (You can play between 7 and 30 days)");
             gameDays = Console.ReadLine();
-            int parsedGameDays;
+            
             int.TryParse(gameDays, out parsedGameDays);     
             
             while (parsedGameDays > 30 || parsedGameDays <7 || !int.TryParse(gameDays, out parsedGameDays))
@@ -86,6 +95,7 @@ namespace Lemonade_Stand
             weather = r.Next(15, 32);
             thirst = weather - 14;
 
+            Console.Clear();
             Console.WriteLine("Day " + date);
             Console.WriteLine("Today's Weather is " + weather + " degrees.");
             Console.WriteLine("You have £" + money + ".");
@@ -95,8 +105,8 @@ namespace Lemonade_Stand
             Console.WriteLine("Paper Cups: 20 for £1");
             Console.WriteLine("Sugar: 8 cups for Sugar for £1");
             Console.WriteLine("Ice: 100 cubes for £1");
-            Console.WriteLine();        
-
+            Console.WriteLine();
+            Console.ReadLine();
         }
 
         public void BuySupplies()
@@ -237,7 +247,27 @@ namespace Lemonade_Stand
             }
 
             customers = thirst * 11;
+
+            if (customers > cups)
+            {
+                cupsSold = cups;
+            }
+
+            if (cups > customers)
+            {
+                cupsSold = customers;
+            }
             
+            cups = customers - cups;
+            if (cups < 0)
+            {
+                cups = 0;
+            }
+
+            money = money + (cupsSold / 2);
+
+            Console.WriteLine("You've sold " + cupsSold + " cups of lemonade!");
+            Console.WriteLine("You have £" + money + ".");
 
         }
 
