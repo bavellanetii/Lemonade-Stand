@@ -25,11 +25,15 @@ namespace Lemonade_Stand
             int cups; //Paper cups
             int ice; //Ice cubes. Melt at the end of each day
             int date = 1;
+            int maxPitchers;
+            int weather;
             string gameDays;
             string deductLemons;
             string deductSugar;
             string deductCups;
             string deductIce;
+            string cubesPerCup;
+            
 
 
         static void Main()
@@ -44,6 +48,8 @@ namespace Lemonade_Stand
 
             p.ListSupplies();
 
+            p.RunDay();
+
             Console.ReadLine();
 
         }
@@ -56,12 +62,13 @@ namespace Lemonade_Stand
             Console.WriteLine("How many days would you like to play? (You can play between 7 and 30 days)");
             gameDays = Console.ReadLine();
             int parsedGameDays;
-
-            while (!int.TryParse(gameDays, out parsedGameDays))
+            int.TryParse(gameDays, out parsedGameDays);     
+            
+            while (parsedGameDays > 30 || parsedGameDays <7 || !int.TryParse(gameDays, out parsedGameDays))
             {
-            Console.WriteLine("Invalid Number, please enter a number between 7 and 30");
+            Console.WriteLine("Invalid Number, please enter a number between 7 and 35");
             gameDays = Console.ReadLine();
-
+            int.TryParse(gameDays, out parsedGameDays);
             }
 
             Console.Clear();
@@ -73,9 +80,12 @@ namespace Lemonade_Stand
         {
             //Each day will be assigned a random temperature, and will ask the user to buy supplies. Will need to be nested in a loop for each day.
            
-            Random random = new Random();
+            Random r = new Random();
+            weather = r.Next(15, 32);
+            int thirst = weather - 15;
+
             Console.WriteLine("Day " + date);
-            Console.WriteLine("Today's Weather is " + random.Next(15, 32) + " degrees.");
+            Console.WriteLine("Today's Weather is " + weather + " degrees.");
             Console.WriteLine("You have £" + money + ".");
             Console.WriteLine();
             Console.WriteLine("Price List:");
@@ -83,7 +93,8 @@ namespace Lemonade_Stand
             Console.WriteLine("Paper Cups: 20 for £1");
             Console.WriteLine("Sugar: 8 cups for Sugar for £1");
             Console.WriteLine("Ice: 100 cubes for £1");
-            Console.WriteLine();
+            Console.WriteLine();        
+
         }
 
         public void BuySupplies()
@@ -179,14 +190,48 @@ namespace Lemonade_Stand
 
         public void ListSupplies()
         {
-            
-
+            Console.Clear();
+            Console.WriteLine("Today's Weather is " + weather + " degrees.");
             Console.WriteLine("You have " + lemons + " lemons.");
             Console.WriteLine("You have " + sugar + " cups of sugar.");
             Console.WriteLine("You have " + cups + " paper cups.");
             Console.WriteLine("You have " + ice + " ice cubes.");
-            Console.WriteLine(money);
+            Console.WriteLine("You have £" + money + ".");
 
+        }
+
+        public void RunDay()
+        {
+            //This will simulate one day
+            if (lemons < 4)
+            {
+                Console.WriteLine("You don't have enough lemons to make a pitcher");
+                lemons = lemons + 4;
+            }
+            if (sugar < 4)
+            {
+                Console.WriteLine("You don't have enough sugar to make a pitcher");
+                sugar = sugar + 4;
+            }
+
+            while (lemons >= 4 && sugar >= 4)
+            {
+                lemons = lemons - 4;
+                sugar = sugar - 4;
+                maxPitchers++;
+            }
+            
+            Console.WriteLine("How many ice cubes would you like to put in each cup?");
+            cubesPerCup = Console.ReadLine();
+            int parsedCubesPerCup;
+
+            int.TryParse(cubesPerCup, out parsedCubesPerCup);
+            while (!int.TryParse(cubesPerCup, out parsedCubesPerCup) || parsedCubesPerCup < 1 || parsedCubesPerCup > 4)
+            {
+                Console.WriteLine("Invalid Number, please enter a number between 1 and 4");
+                cubesPerCup = Console.ReadLine();
+                int.TryParse(cubesPerCup, out parsedCubesPerCup);
+            }
         }
 
 
