@@ -27,6 +27,8 @@ namespace Lemonade_Stand
             int date = 1;
             int maxPitchers;
             int weather;
+            int customers;
+            int thirst;
             string gameDays;
             string deductLemons;
             string deductSugar;
@@ -82,7 +84,7 @@ namespace Lemonade_Stand
            
             Random r = new Random();
             weather = r.Next(15, 32);
-            int thirst = weather - 15;
+            thirst = weather - 14;
 
             Console.WriteLine("Day " + date);
             Console.WriteLine("Today's Weather is " + weather + " degrees.");
@@ -221,6 +223,7 @@ namespace Lemonade_Stand
                 maxPitchers++;
             }
             
+            
             Console.WriteLine("How many ice cubes would you like to put in each cup?");
             cubesPerCup = Console.ReadLine();
             int parsedCubesPerCup;
@@ -232,6 +235,10 @@ namespace Lemonade_Stand
                 cubesPerCup = Console.ReadLine();
                 int.TryParse(cubesPerCup, out parsedCubesPerCup);
             }
+
+            customers = thirst * 11;
+            
+
         }
 
 
