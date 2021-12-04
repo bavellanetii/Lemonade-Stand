@@ -15,7 +15,8 @@ namespace Lemonade_Stand
          * You will then price your lemonade accordingly & decide how much ice to use in each cup.
          * It takes 4 Lemons and 4 cups of sugar per pitcher. A pitcher fills anywhere from 10-20 cups depending on how much ice you use in each cup.
          * 
-         * 
+         * Simplified program to get on with other projects. Main objective in making the program was to practice the basics that I'd learned from various tutorials and see if I could create something on my own without any help or direction,
+         * which has been a success. I could flesh the game out to be a bit more detailed and random, but it would require more of the same and I want to challenge myself in new ways. 
         */
 
             decimal money = 25; //total money
@@ -35,8 +36,8 @@ namespace Lemonade_Stand
             string deductSugar;
             string deductCups;
             string deductIce;
-            string cubesPerCup;
-            
+    
+
 
 
         static void Main()
@@ -60,9 +61,26 @@ namespace Lemonade_Stand
 
                 p.date++;
 
-                Console.ReadLine();
+                if (p.date % 2 == 1)
+                {
+                    p.lemons = 0;
+                    Console.WriteLine("Your lemons have spoiled.");
+                }
+
             }
 
+            Console.Clear();
+            if (p.money > 25)
+            {
+                Console.WriteLine("Game over!");
+                Console.WriteLine("You ended the game with £" + p.money + ", making a profit of £" + (p.money - 25) + "!");
+            }
+            if (p.money < 25)
+            {
+                Console.WriteLine("Game Over!");
+                Console.WriteLine("You ended the game with £" + p.money + ", making a loss of £" + (25 - p.money) + "!");
+            }
+            Console.ReadLine();
         }
 
         public void Start()
@@ -70,6 +88,12 @@ namespace Lemonade_Stand
             //Starts the game, prompting the user to select how many days they would like to play for
            
             Console.WriteLine("Welcome To Lemonade Stand!");
+            Console.WriteLine();
+            Console.WriteLine("The aim of the game is to try and make money selling lemonade!");
+            Console.WriteLine("You start off with £25, and are given the weather at the start of each day and asked to buy supplies.");
+            Console.WriteLine("It takes 4 lemons and 4 cups of sugar to fill a pitcher, will make 15 cups of lemonade.");
+            Console.WriteLine("You will also need 10 ice cubes per pitcher, which melt at the end of each day. Your lemons will spoil every other day.");
+            Console.WriteLine();
             Console.WriteLine("How many days would you like to play? (You can play between 7 and 30 days)");
             gameDays = Console.ReadLine();
             
@@ -106,26 +130,27 @@ namespace Lemonade_Stand
             Console.WriteLine("Sugar: 8 cups for Sugar for £1");
             Console.WriteLine("Ice: 100 cubes for £1");
             Console.WriteLine();
-            Console.ReadLine();
+            
         }
 
         public void BuySupplies()
         {
             //need to change all to TryParse to better handle exceptions
-            
 
+            Console.WriteLine();
             Console.WriteLine("How many pounds would you like to spend on lemons?");
             deductLemons = Console.ReadLine();
-            int parsedDeductLemons = int.Parse(deductLemons);
+            int parsedDeductLemons;
+            
+            int.TryParse(deductLemons, out parsedDeductLemons);
 
-            while (parsedDeductLemons > money)
+            while (parsedDeductLemons > money || !int.TryParse(deductLemons, out parsedDeductLemons))
             {
-                Console.WriteLine("You only have £" + money + ", please try again.");
-                Console.WriteLine();
-                Console.WriteLine("How many pounds would you like to spend on lemons?");
+                Console.WriteLine("Incorrect input or you're trying to spend more than you have. Please try again :)");
                 deductLemons = Console.ReadLine();
-                parsedDeductLemons = int.Parse(deductLemons);
+                int.TryParse(deductLemons, out parsedDeductLemons);
             }
+
 
             money = money - parsedDeductLemons;
             lemons = parsedDeductLemons * 10;
@@ -139,17 +164,18 @@ namespace Lemonade_Stand
 
             Console.WriteLine("How many pounds would you like to spend on sugar?");
             deductSugar = Console.ReadLine();
-            int parsedDeductSugar = int.Parse(deductSugar);
-            
-            while (parsedDeductSugar > money)
-            { 
-                Console.WriteLine("You only have £" + money + ", please try again.");
-                Console.WriteLine();
-                Console.WriteLine("How many pounds would you like to spend on sugar?");
+            int parsedDeductSugar;
+
+            int.TryParse(deductSugar, out parsedDeductSugar);
+
+            while (parsedDeductSugar > money || !int.TryParse(deductSugar, out parsedDeductSugar))
+            {
+                Console.WriteLine("Incorrect input or you're trying to spend more than you have. Please try again :)");
                 deductSugar = Console.ReadLine();
-                parsedDeductSugar = int.Parse(deductSugar);
+                int.TryParse(deductSugar, out parsedDeductSugar);
             }
-            
+
+
             money = money - parsedDeductSugar;
             sugar = parsedDeductSugar * 8;
             Console.WriteLine("You have £" + money + " remaining");
@@ -160,16 +186,17 @@ namespace Lemonade_Stand
             
             Console.WriteLine("How many pounds would you like to spend on paper cups?");
             deductCups = Console.ReadLine();
-            int parsedDeductCups = int.Parse(deductCups);
+            int parsedDeductCups;
 
-            while (parsedDeductCups > money)
+            int.TryParse(deductCups, out parsedDeductCups);
+
+            while (parsedDeductCups > money || !int.TryParse(deductCups, out parsedDeductCups))
             {
-                Console.WriteLine("You only have £" + money + ", please try again.");
-                Console.WriteLine();
-                Console.WriteLine("How many pounds would you like to spend on paper cups?");
+                Console.WriteLine("Incorrect input or you're trying to spend more than you have. Please try again :)");
                 deductCups = Console.ReadLine();
-                parsedDeductCups = int.Parse(deductCups);
+                int.TryParse(deductCups, out parsedDeductCups);
             }
+
 
             money = money - parsedDeductCups;
             cups = parsedDeductCups * 20;
@@ -182,28 +209,28 @@ namespace Lemonade_Stand
 
             Console.WriteLine("How many pounds would you like to spend on Ice?");
             deductIce = Console.ReadLine();
-            int parsedDeductIce = int.Parse(deductIce);
+            int parsedDeductIce;
 
-            while (parsedDeductIce > money)
+            int.TryParse(deductIce, out parsedDeductIce);
+
+            while (parsedDeductIce > money || !int.TryParse(deductIce, out parsedDeductIce))
             {
-                Console.WriteLine("You only have £" + money + ", please try again.");
-                Console.WriteLine();
-                Console.WriteLine("How many pounds would you like to spend on Ice?");
+                Console.WriteLine("Incorrect input or you're trying to spend more than you have. Please try again :)");
                 deductIce = Console.ReadLine();
-                parsedDeductIce = int.Parse(deductIce);
+                int.TryParse(deductIce, out parsedDeductIce);
             }
+
 
             money = money - parsedDeductIce;
             ice = parsedDeductIce * 100;
             Console.WriteLine("You have £" + money + " remaining");
             Console.WriteLine();
-
+            Console.Clear();
         }
 
         public void ListSupplies()
         {
-            Console.Clear();
-            Console.WriteLine("Today's Weather is " + weather + " degrees.");
+            //does what it says           
             Console.WriteLine("You have " + lemons + " lemons.");
             Console.WriteLine("You have " + sugar + " cups of sugar.");
             Console.WriteLine("You have " + cups + " paper cups.");
@@ -217,35 +244,31 @@ namespace Lemonade_Stand
             //This will simulate one day
             if (lemons < 4)
             {
-                Console.WriteLine("You don't have enough lemons to make a pitcher");
+                Console.WriteLine("You don't have enough lemons to make a pitcher. Your parents have give you some this time.");
                 lemons = lemons + 4;
             }
             if (sugar < 4)
             {
-                Console.WriteLine("You don't have enough sugar to make a pitcher");
+                Console.WriteLine("You don't have enough sugar to make a pitcher. Your parents have give you some this time.");
                 sugar = sugar + 4;
             }
+            if (ice < 10)
+            {
+                Console.WriteLine("You don't have enough ice to make a pitcher. Your parents have give you some this time.");
+                ice = ice + 4;
+            }
 
-            while (lemons >= 4 && sugar >= 4)
+
+            while (lemons >= 4 && sugar >= 4 && ice >= 10)
             {
                 lemons = lemons - 4;
                 sugar = sugar - 4;
+                ice = ice - 10;
                 maxPitchers++;
             }
             
             
-            Console.WriteLine("How many ice cubes would you like to put in each cup?");
-            cubesPerCup = Console.ReadLine();
-            int parsedCubesPerCup;
-
-            int.TryParse(cubesPerCup, out parsedCubesPerCup);
-            while (!int.TryParse(cubesPerCup, out parsedCubesPerCup) || parsedCubesPerCup < 1 || parsedCubesPerCup > 4)
-            {
-                Console.WriteLine("Invalid Number, please enter a number between 1 and 4");
-                cubesPerCup = Console.ReadLine();
-                int.TryParse(cubesPerCup, out parsedCubesPerCup);
-            }
-
+  
             customers = thirst * 11;
 
             if (customers > cups)
@@ -266,8 +289,14 @@ namespace Lemonade_Stand
 
             money = money + (cupsSold / 2);
 
+            ice = 0;
+            Console.Clear();
+            Console.WriteLine();
             Console.WriteLine("You've sold " + cupsSold + " cups of lemonade!");
             Console.WriteLine("You have £" + money + ".");
+            Console.WriteLine();
+            Console.WriteLine("Press any key to continue to the next day");
+            Console.ReadLine();
 
         }
 
